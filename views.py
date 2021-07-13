@@ -19,8 +19,10 @@ def __get_dev(request):
         done_list = SupportTicket.objects.filter(active=False)
         dev = True
     else:
-        bug_list = SupportTicket.objects.filter(reporter=request.user).filter(active=True)
-        done_list = SupportTicket.objects.filter(reporter=request.user).filter(active=False)
+        bug_list = SupportTicket.objects.filter(
+            reporter=request.user).filter(active=True)
+        done_list = SupportTicket.objects.filter(
+            reporter=request.user).filter(active=False)
         dev = False
     return dev, bug_list, done_list
 
@@ -38,7 +40,8 @@ def new_bug_view(request, ticket_type=0):
                 t.save()
                 send_mail(
                     "New AppMR Ticket {0}".format(t.id),
-                    t.description,
+                    "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
+                        t.description),
                     os.environ.get('DEFAULT_FROM_EMAIL'),
                     [os.environ.get('DEV_EMAIL')])
                 form = SupportTicketForm()
@@ -113,7 +116,8 @@ def post_comment_view(request, bug_id=None):
                 m.save()
                 send_mail(
                     "Response on AppMR Ticket {0}".format(bug_id),
-                    t.comment,
+                    "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
+                        t.comment),
                     os.environ.get('DEFAULT_FROM_EMAIL'),
                     [os.environ.get('DEV_EMAIL'), t.author.email])
                 comment_form = CommentForm()
