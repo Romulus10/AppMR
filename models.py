@@ -18,6 +18,7 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     comment = models.CharField(max_length=256)
     timestamp = models.DateTimeField(auto_now=True, editable=False, null=False, blank=False)
+    attachment = models.FileField(upload_to='attachments/', blank=True, null=True)
 
 
 class SupportTicket(models.Model):
@@ -29,6 +30,8 @@ class SupportTicket(models.Model):
 
     status = models.CharField(max_length=32, choices=statuses, null=True, blank=True)
     comments = models.ManyToManyField(Comment)
+
+    attachment = models.FileField(upload_to='attachments/', blank=True, null=True)
 
     timestamp = models.DateTimeField(
         auto_now=True, editable=False, null=False, blank=False)

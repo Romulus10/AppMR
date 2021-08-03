@@ -21,6 +21,7 @@
                                     {% else %}
                                     {{ form.instance.status}}
                                     {% endif %}
+                                    {{ form.attachment|as_crispy_field }}
                                     Time submitted: {{ form.instance.timestamp }}
                                 </div>
                             </div>
@@ -47,6 +48,11 @@
                         </div>
                         <div class="card-text">
                             {{ comment.comment }}
+                            {% if comment.attachment %}
+                            <div>
+                                <img src="{{ comment.attachment.url }}" style="max-width: 150px; max-height: 150px;" />
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

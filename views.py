@@ -82,7 +82,7 @@ def bug_detail_view(request, id=None):
         else:
             dev = False
         if request.method == 'POST':
-            form = SupportTicketForm(request.POST or None, instance=m)
+            form = SupportTicketForm(request.POST or None, request.FILES, instance=m)
             if form.is_valid():
                 t = form.save()
                 if t.status == '6':
@@ -107,7 +107,7 @@ def post_comment_view(request, bug_id=None):
         form = SupportTicketForm(instance=m)
         comment_form = CommentForm()
         if request.method == 'POST':
-            comment_form = CommentForm(request.POST)
+            comment_form = CommentForm(request.POST, request.FILES)
             if comment_form.is_valid():
                 t = comment_form.save()
                 t.author = request.user
