@@ -1,6 +1,7 @@
 import os
 
 from django.core.mail import send_mail
+from django.forms.models import model_to_dict
 
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -85,6 +86,8 @@ def bug_detail_view(request, id=None):
             form = SupportTicketForm(request.POST or None, request.FILES, instance=m)
             if form.is_valid():
                 t = form.save()
+                t.status = m.status
+                t.active = m.active
                 if t.status == '6':
                     t.active = False
                 else:
@@ -114,12 +117,13 @@ def post_comment_view(request, bug_id=None):
                 t.save()
                 m.comments.add(t)
                 m.save()
-                send_mail(
-                    "Response on AppMR Ticket {0}".format(bug_id),
-                    "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
-                        t.comment),
-                    os.environ.get('DEFAULT_FROM_EMAIL'),
-                    [os.environ.get('DEV_EMAIL'), t.author.email])
+                if os.environ.get("EMAIL_HOST") != "":
+                    send_mail(
+                        "Response on AppMR Ticket {0}".format(bug_id),
+                        "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
+                            t.comment),
+                        os.environ.get('DEFAULT_FROM_EMAIL'),
+                        [os.environ.get('DEV_EMAIL'), t.author.email])
                 comment_form = CommentForm()
         comments = m.comments.all()
         return render(request, 'appMR/bug_detail.html', {'bug_id': m.id, 'dev': dev, 'form': form, 'comment_form': comment_form, 'comments': comments})

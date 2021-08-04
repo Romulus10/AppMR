@@ -7,7 +7,7 @@
             <h3>Leave a Bug or Problem Report</h3>
         </div>
         <div>
-            <form action="{% url 'appMR:new_bug_view' %}" method="post">
+            <form action="{% url 'appMR:new_bug_view' %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="container">
                     <div class="row justify-content-center">

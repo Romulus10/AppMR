@@ -7,7 +7,7 @@
             <h3>Edit Ticket - {{ bug_id }}</h3>
         </div>
         <div>
-            <form action="{% url 'appMR:bug_detail_view' id=bug_id %}" method="post">
+            <form action="{% url 'appMR:bug_detail_view' id=bug_id %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="container">
                     <div class="row justify-content-center">
@@ -19,14 +19,13 @@
                                     {% if dev %}
                                     {{ form.status|as_crispy_field }}
                                     {% else %}
-                                    {{ form.instance.status}}
+                                    {{ form.instance.get_status_display }}
                                     {% endif %}
                                     {% if bug.attachment %}
                                     <div>
                                         <img src="{{ bug.attachment.url }}" style="max-width: 150px; max-height: 150px;" />
                                     </div>
                                     {% endif %}
-                                    {{ form.attachment|as_crispy_field }}
                                     Time submitted: {{ form.instance.timestamp }}
                                 </div>
                             </div>
@@ -64,7 +63,7 @@
                 {% endfor %}
             </div>
             <div>
-                <form action="{% url 'appMR:post_comment_view' bug_id=bug_id %}" method="post">
+                <form action="{% url 'appMR:post_comment_view' bug_id=bug_id %}" enctype="multipart/form-data" method="post">
                     {% csrf_token %}
                     {{ comment_form|crispy }}
                     <input class="btn btn-primary ml-auto" type="submit" value="Save" />
