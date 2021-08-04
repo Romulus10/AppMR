@@ -31,7 +31,7 @@ def new_bug_view(request, ticket_type=0):
     if request.user.is_authenticated:
         dev, bug_list, done_list = __get_dev(request)
         if request.method == 'POST':
-            form = SupportTicketForm(request.POST)
+            form = SupportTicketForm(request.POST, request.FILES)
             if form.is_valid():
                 t = form.save()
                 t.reporter = request.user
