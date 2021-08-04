@@ -92,7 +92,7 @@ def bug_detail_view(request, id=None):
                 t.save()
         else:
             form = SupportTicketForm(instance=m)
-        return render(request, 'appMR/bug_detail.html', {'bug_id': m.id, 'dev': dev, 'form': form, 'comment_form': comment_form, 'comments': comments})
+        return render(request, 'appMR/bug_detail.html', {'bug_id': m.id, 'bug': m, 'dev': dev, 'form': form, 'comment_form': comment_form, 'comments': comments})
     else:
         return redirect('appMR:not_logged_in')
 

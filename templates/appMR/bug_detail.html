@@ -21,6 +21,11 @@
                                     {% else %}
                                     {{ form.instance.status}}
                                     {% endif %}
+                                    {% if bug.attachment %}
+                                    <div>
+                                        <img src="{{ bug.attachment.url }}" style="max-width: 150px; max-height: 150px;" />
+                                    </div>
+                                    {% endif %}
                                     {{ form.attachment|as_crispy_field }}
                                     Time submitted: {{ form.instance.timestamp }}
                                 </div>
