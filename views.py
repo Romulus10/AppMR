@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from .forms import SupportTicketForm, CommentForm
-from .models import SupportTicket, Comment
+from .models import SupportTicket
 
 
 def not_logged_in(request):
@@ -123,7 +123,7 @@ def post_comment_view(request, bug_id=None):
                         "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
                             t.comment),
                         os.environ.get('DEFAULT_FROM_EMAIL'),
-                        [os.environ.get('DEV_EMAIL'), t.author.email])
+                        [os.environ.get('DEV_EMAIL'), t.author.email, m.reporter.email])
                 comment_form = CommentForm()
         comments = m.comments.all()
         return render(request, 'appMR/bug_detail.html', {'bug_id': m.id, 'dev': dev, 'form': form, 'comment_form': comment_form, 'comments': comments})
