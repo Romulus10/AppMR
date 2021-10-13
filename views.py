@@ -3,6 +3,8 @@ import os
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 
+from appMR.background_tasks import check_old_tickets
+
 from .forms import SupportTicketForm, CommentForm
 from .models import SupportTicket
 
@@ -77,6 +79,7 @@ def bug_list_view(request, ticket_type=0):
     :return:
     """
     if request.user.is_authenticated:
+        check_old_tickets()
         form = SupportTicketForm()
         dev, bug_list, done_list = __get_dev(request)
         return render(request, 'appMR/bug_list.html',
