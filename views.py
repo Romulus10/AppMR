@@ -8,10 +8,20 @@ from .models import SupportTicket
 
 
 def not_logged_in(request):
+    """
+
+    :param request:
+    :return:
+    """
     return render(request, 'appMR/not_logged_in.html')
 
 
 def __get_dev(request):
+    """
+
+    :param request:
+    :return:
+    """
     if request.user.groups.filter(name='Developer').exists():
         bug_list = SupportTicket.objects.filter(active=True)
         done_list = SupportTicket.objects.filter(active=False)
@@ -26,6 +36,12 @@ def __get_dev(request):
 
 
 def new_bug_view(request, ticket_type=0):
+    """
+
+    :param request:
+    :param ticket_type:
+    :return:
+    """
     if request.user.is_authenticated:
         dev, bug_list, done_list = __get_dev(request)
         if request.method == 'POST':
@@ -54,6 +70,12 @@ def new_bug_view(request, ticket_type=0):
 
 
 def bug_list_view(request, ticket_type=0):
+    """
+
+    :param request:
+    :param ticket_type:
+    :return:
+    """
     if request.user.is_authenticated:
         form = SupportTicketForm()
         dev, bug_list, done_list = __get_dev(request)
@@ -64,6 +86,12 @@ def bug_list_view(request, ticket_type=0):
 
 
 def change_bug_list_view(request, ticket_type=0):
+    """
+
+    :param request:
+    :param ticket_type:
+    :return:
+    """
     if request.user.is_authenticated:
         ticket_type = 0 if ticket_type == 1 else 1
         form = SupportTicketForm()
@@ -75,6 +103,12 @@ def change_bug_list_view(request, ticket_type=0):
 
 
 def bug_detail_view(request, id=None):
+    """
+
+    :param request:
+    :param id:
+    :return:
+    """
     if request.user.is_authenticated:
         m = get_object_or_404(SupportTicket, pk=id)
         comments = m.comments.all()
@@ -104,6 +138,12 @@ def bug_detail_view(request, id=None):
 
 
 def post_comment_view(request, bug_id=None):
+    """
+
+    :param request:
+    :param bug_id:
+    :return:
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Developer').exists():
             dev = True

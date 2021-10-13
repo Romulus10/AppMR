@@ -14,6 +14,9 @@ statuses = (
 
 
 class Comment(models.Model):
+    """
+    Database model for comments on SupportTickets.
+    """
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     comment = models.CharField(max_length=256)
     timestamp = models.DateTimeField(auto_now=True, editable=False, null=False, blank=False)
@@ -21,6 +24,9 @@ class Comment(models.Model):
 
 
 class SupportTicket(models.Model):
+    """
+    Database model for support tickets.
+    """
     reporter = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     active = models.BooleanField(default=True)
 
@@ -35,8 +41,10 @@ class SupportTicket(models.Model):
     timestamp = models.DateTimeField(
         auto_now=True, editable=False, null=False, blank=False)
 
+    @property
     def __unicode__(self):
         return self.title
 
+    @property
     def __str__(self):
         return self.title
