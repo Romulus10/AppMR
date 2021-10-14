@@ -6,7 +6,7 @@ from appMR.models import Comment, SupportTicket, User
 
 class Test(TestCase):
     def setUp(self):
-        u = User.objects.get(pk=1)
+        u = User.objects.get_or_create(username="test")[0]
         s = SupportTicket.objects.create(
             reporter=u,
             title="Test",
