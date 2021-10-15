@@ -1,3 +1,6 @@
+"""
+Register appMR models with the admin site.
+"""
 from django.contrib import admin
 
 from .models import SupportTicket, Comment

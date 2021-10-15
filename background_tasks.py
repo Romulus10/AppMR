@@ -1,12 +1,21 @@
+"""
+Non-view functions used to carry out background processes.
+"""
 from datetime import timedelta
 from django.utils import timezone
 from appMR.models import Comment, SupportTicket, User
 
 
-def check_old_tickets():
-    now = timezone.now()
+def check_old_tickets(now=None) -> None:
+    """
+    Close tickets with no activity for 30 days.
+    :param now:
+    :return:
+    """
+    if now == None:
+        now = timezone.now()
     d = now - timedelta(days=30)
-    for ticket in SupportTicket.objects.exclude(status='5'):
+    for ticket in SupportTicket.objects.filter(active=True):
         stale = False
         for comment in ticket.comments.all():
             if comment.timestamp < d:

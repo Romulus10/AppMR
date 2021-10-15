@@ -1,4 +1,8 @@
+from datetime import timedelta
 from unittest import TestCase
+from django.utils import timezone
+
+from django.utils.timezone import now
 from appMR.background_tasks import check_old_tickets
 
 from appMR.models import Comment, SupportTicket, User
@@ -6,6 +10,10 @@ from appMR.models import Comment, SupportTicket, User
 
 class Test(TestCase):
     def setUp(self):
+        u = User.objects.get_or_create(username="test")[0]
+
+    def test_check_old_tickets_not_expired(self):
+        s = SupportTicket.objects.get(pk=1)
         u = User.objects.get_or_create(username="test")[0]
         s = SupportTicket.objects.create(
             reporter=u,
@@ -19,8 +27,17 @@ class Test(TestCase):
                 comment="This is a test comment.",
             )
         )
-
-    def test_check_old_tickets_not_expired(self):
-        s = SupportTicket.objects.get(pk=1)
         check_old_tickets()
         self.assertTrue(s.active)
+
+    def test_check_old_tickets_expired(self):
+        s = SupportTicket.objects.get(pk=1)
+        print("Test Ticket")
+        print(s.title)
+        print("Active State: {}".format(s.active))
+        offset = timezone.now() + timedelta(days=100)
+        check_old_tickets(now=offset)
+        print("Final Active State: {}".format(s.active))
+        print("Ticket Title - Final: {}".format(s.title))
+        self.assertFalse(s.active)
+

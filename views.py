@@ -1,3 +1,6 @@
+"""
+appMR view functions.
+"""
 import os
 
 from django.core.mail import send_mail
@@ -54,6 +57,7 @@ def new_bug_view(request, ticket_type=0):
                 t.status = '1'
                 t.active = True
                 t.save()
+                # noinspection LongLine
                 send_mail(
                     "New AppMR Ticket {0}".format(t.id),
                     "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
@@ -164,6 +168,7 @@ def post_comment_view(request, bug_id=None):
                 m.comments.add(t)
                 m.save()
                 if os.environ.get("EMAIL_HOST") != "":
+                    # noinspection LongLine
                     send_mail(
                         "Response on AppMR Ticket {0}".format(bug_id),
                         "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
