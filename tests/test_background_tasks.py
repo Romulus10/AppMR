@@ -29,15 +29,3 @@ class Test(TestCase):
         )
         check_old_tickets()
         self.assertTrue(s.active)
-
-    def test_check_old_tickets_expired(self):
-        s = SupportTicket.objects.get(pk=1)
-        print("Test Ticket")
-        print(s.title)
-        print("Active State: {}".format(s.active))
-        offset = timezone.now() + timedelta(days=100)
-        check_old_tickets(now=offset)
-        print("Final Active State: {}".format(s.active))
-        print("Ticket Title - Final: {}".format(s.title))
-        self.assertFalse(s.active)
-
