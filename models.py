@@ -1,9 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
-from django.contrib.auth import get_user_model
 User = get_user_model()
-
 
 statuses = (
     ('1', 'Waiting'),
@@ -16,6 +15,9 @@ statuses = (
 
 
 class Comment(models.Model):
+    """
+    Database model for comments on SupportTickets.
+    """
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     comment = models.CharField(max_length=256)
     timestamp = models.DateTimeField(auto_now=True, editable=False, null=False, blank=False)
@@ -23,6 +25,9 @@ class Comment(models.Model):
 
 
 class SupportTicket(models.Model):
+    """
+    Database model for support tickets.
+    """
     reporter = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     active = models.BooleanField(default=True)
 
@@ -38,5 +43,6 @@ class SupportTicket(models.Model):
         auto_now=True, editable=False, null=False, blank=False)
     last_updated = models.DateTimeField(default=timezone.now)
 
+    @property
     def __str__(self):
         return self.title

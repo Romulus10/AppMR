@@ -26,6 +26,4 @@ def check_old_tickets(now=None) -> None:
             )
             ticket.status = '5'
             ticket.active = False
-            print(ticket.title)
-            print(ticket.active)
             ticket.save()

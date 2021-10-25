@@ -1,8 +1,11 @@
-from django.conf.urls import url, include
+"""
+appMR URL configurations.
+"""
+from django.conf.urls import url
 from django.urls import path
 
-from .views import not_logged_in, bug_list_view, bug_detail_view,\
-                    post_comment_view, new_bug_view, change_bug_list_view
+from .views import not_logged_in, bug_list_view, bug_detail_view, \
+    post_comment_view, new_bug_view, change_bug_list_view
 
 app_name = 'appMR'
 
