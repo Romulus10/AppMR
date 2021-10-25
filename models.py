@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -35,9 +36,7 @@ class SupportTicket(models.Model):
 
     timestamp = models.DateTimeField(
         auto_now=True, editable=False, null=False, blank=False)
-
-    def __unicode__(self):
-        return self.title
+    last_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title

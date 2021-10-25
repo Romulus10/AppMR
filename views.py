@@ -1,11 +1,11 @@
 import os
 
 from django.core.mail import send_mail
-from django.forms.models import model_to_dict
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.timezone import now
 
-
+from appMR.background_tasks import check_old_tickets
 from .forms import SupportTicketForm, CommentForm
 from .models import SupportTicket, Comment
 
@@ -38,6 +38,7 @@ def new_bug_view(request, ticket_type=0):
                 t.reporter = request.user
                 t.status = '1'
                 t.active = True
+                t.last_updated = now()
                 t.save()
                 send_mail(
                     "New AppMR Ticket {0}".format(t.id),
@@ -116,6 +117,7 @@ def post_comment_view(request, bug_id=None):
                 t.author = request.user
                 t.save()
                 m.comments.add(t)
+                m.last_updated = now()
                 m.save()
                 if os.environ.get("EMAIL_HOST") != "":
                     send_mail(
