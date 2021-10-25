@@ -43,6 +43,8 @@ class SupportTicket(models.Model):
         auto_now=True, editable=False, null=False, blank=False)
     last_updated = models.DateTimeField(default=timezone.now)
 
-    @property
     def __str__(self):
-        return self.title
+        return str(self.title)
+
+    def __repr__(self):
+        return repr(self.title)
