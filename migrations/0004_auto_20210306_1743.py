@@ -5,15 +5,25 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('appMR', '0003_auto_20210306_1728'),
+        ("appMR", "0003_auto_20210306_1728"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='supportticket',
-            name='status',
-            field=models.CharField(blank=True,
-                                   choices=[('1', 'Waiting'), ('2', 'Seen'), ('3', 'Confirmed'), ('4', 'In Progress'),
-                                            ('5', 'Resolved'), ('6', 'Verified')], max_length=32, null=True),
+            model_name="supportticket",
+            name="status",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("1", "Waiting"),
+                    ("2", "Seen"),
+                    ("3", "Confirmed"),
+                    ("4", "In Progress"),
+                    ("5", "Resolved"),
+                    ("6", "Verified"),
+                ],
+                max_length=32,
+                null=True,
+            ),
         ),
     ]

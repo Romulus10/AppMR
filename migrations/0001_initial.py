@@ -14,26 +14,64 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(max_length=256)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("text", models.CharField(max_length=256)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='SupportTicket',
+            name="SupportTicket",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=32)),
-                ('description', models.CharField(max_length=256)),
-                ('status', models.CharField(
-                    choices=[('1', 'Waiting'), ('2', 'Seen'), ('3', 'Confirmed'), ('4', 'In Progress'),
-                             ('5', 'Resolved'), ('6', 'Verified')], max_length=32)),
-                ('timestamp', models.DateTimeField(auto_now=True)),
-                ('comments', models.ManyToManyField(to='appMR.Comment')),
-                ('reporter',
-                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=32)),
+                ("description", models.CharField(max_length=256)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("1", "Waiting"),
+                            ("2", "Seen"),
+                            ("3", "Confirmed"),
+                            ("4", "In Progress"),
+                            ("5", "Resolved"),
+                            ("6", "Verified"),
+                        ],
+                        max_length=32,
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now=True)),
+                ("comments", models.ManyToManyField(to="appMR.Comment")),
+                (
+                    "reporter",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

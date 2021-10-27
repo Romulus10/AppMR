@@ -5,18 +5,18 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('appMR', '0008_auto_20210306_1839'),
+        ("appMR", "0008_auto_20210306_1839"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='comment',
-            name='attachment',
-            field=models.FileField(blank=True, null=True, upload_to='attachments/'),
+            model_name="comment",
+            name="attachment",
+            field=models.FileField(blank=True, null=True, upload_to="attachments/"),
         ),
         migrations.AddField(
-            model_name='supportticket',
-            name='attachment',
-            field=models.FileField(blank=True, null=True, upload_to='attachments/'),
+            model_name="supportticket",
+            name="attachment",
+            field=models.FileField(blank=True, null=True, upload_to="attachments/"),
         ),
     ]

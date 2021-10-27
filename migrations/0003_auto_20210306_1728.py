@@ -5,13 +5,13 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('appMR', '0002_supportticket_active'),
+        ("appMR", "0002_supportticket_active"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='comment',
-            old_name='text',
-            new_name='content',
+            model_name="comment",
+            old_name="text",
+            new_name="content",
         ),
     ]

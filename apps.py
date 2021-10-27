@@ -8,4 +8,5 @@ class AppmrConfig(AppConfig):
     """
     Configurations for appMR.
     """
-    name = 'appMR'
+
+    name = "appMR"

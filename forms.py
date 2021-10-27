@@ -9,10 +9,10 @@ class SupportTicketForm(ModelForm):
     class Meta:
         model = SupportTicket
         fields = [
-            'title',
-            'description',
-            'status',
-            'attachment',
+            "title",
+            "description",
+            "status",
+            "attachment",
         ]
 
 
@@ -22,6 +22,6 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = [
-            'comment',
-            'attachment',
+            "comment",
+            "attachment",
         ]

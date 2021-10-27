@@ -5,13 +5,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('appMR', '0005_auto_20210306_1746'),
+        ("appMR", "0005_auto_20210306_1746"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='supportticket',
-            name='active',
+            model_name="supportticket",
+            name="active",
             field=models.BooleanField(default=True),
         ),
     ]
