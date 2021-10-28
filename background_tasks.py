@@ -2,7 +2,9 @@
 Non-view functions used to carry out background processes.
 """
 from datetime import timedelta
+
 from django.utils import timezone
+
 from appMR.models import Comment, SupportTicket, User
 
 
