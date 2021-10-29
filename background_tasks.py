@@ -22,8 +22,9 @@ def check_old_tickets(now=None) -> None:
             ticket.comments.add(
                 Comment.objects.create(
                     author=User.objects.get(pk=1),
-                    comment="Hi all - we haven't seen activity on this ticket for 30 days, so we're going to mark it "
-                    "as resolved. Please don't hesitate to open a new ticket if you need more help. ",
+                    comment="Hi all - we haven't seen activity on this ticket for 30 days, "
+                    "so we're going to mark it as resolved. Please don't hesitate to open a "
+                    "new ticket if you need more help. ",
                 )
             )
             ticket.status = "5"

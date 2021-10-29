@@ -62,28 +62,17 @@ def new_bug_view(request, ticket_type=0):
                 t.save()
                 # noinspection LongLine
                 send_mail(
-                    "New AppMR Ticket {0}".format(t.id),
-                    "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
-                        t.description
-                    ),
+                    f"New AppMR Ticket {t.id}",
+                    f"{t.description}\n\n\nTHIS IS AN AUTOMATED MESSAGE. "
+                    "PLEASE DO NOT REPLY TO THIS EMAIL. "
+                    "PLEASE LOG IN TO REPLY.",
                     os.environ.get("DEFAULT_FROM_EMAIL"),
                     [os.environ.get("DEV_EMAIL")],
                 )
                 form = SupportTicketForm()
-            return render(
-                request,
-                "appMR/bug_list.html",
-                {
-                    "open": ticket_type,
-                    "bug_list": bug_list,
-                    "done_list": done_list,
-                    "dev": dev,
-                    "form": form,
-                },
-            )
         else:
             form = SupportTicketForm()
-        return render(
+        return_response = render(
             request,
             "appMR/bug_list.html",
             {
@@ -95,7 +84,8 @@ def new_bug_view(request, ticket_type=0):
             },
         )
     else:
-        return redirect("appMR:not_logged_in")
+        return_response = redirect("appMR:not_logged_in")
+    return return_response
 
 
 def bug_list_view(request, ticket_type=0):
@@ -109,7 +99,7 @@ def bug_list_view(request, ticket_type=0):
         check_old_tickets()
         form = SupportTicketForm()
         dev, bug_list, done_list = __get_dev(request)
-        return render(
+        return_response = render(
             request,
             "appMR/bug_list.html",
             {
@@ -121,7 +111,8 @@ def bug_list_view(request, ticket_type=0):
             },
         )
     else:
-        return redirect("appMR:not_logged_in")
+        return_response = redirect("appMR:not_logged_in")
+    return return_response
 
 
 def change_bug_list_view(request, ticket_type=0):
@@ -135,7 +126,7 @@ def change_bug_list_view(request, ticket_type=0):
         ticket_type = 0 if ticket_type == 1 else 1
         form = SupportTicketForm()
         dev, bug_list, done_list = __get_dev(request)
-        return render(
+        return_response = render(
             request,
             "appMR/bug_list.html",
             {
@@ -147,7 +138,8 @@ def change_bug_list_view(request, ticket_type=0):
             },
         )
     else:
-        return redirect("appMR:not_logged_in")
+        return_response = redirect("appMR:not_logged_in")
+    return return_response
 
 
 def bug_detail_view(request, id=None):
@@ -178,7 +170,7 @@ def bug_detail_view(request, id=None):
                 t.save()
         else:
             form = SupportTicketForm(instance=m)
-        return render(
+        return_response = render(
             request,
             "appMR/bug_detail.html",
             {
@@ -191,7 +183,8 @@ def bug_detail_view(request, id=None):
             },
         )
     else:
-        return redirect("appMR:not_logged_in")
+        return_response = redirect("appMR:not_logged_in")
+    return return_response
 
 
 def post_comment_view(request, bug_id=None):
@@ -221,16 +214,16 @@ def post_comment_view(request, bug_id=None):
                 if os.environ.get("EMAIL_HOST") != "":
                     # noinspection LongLine
                     send_mail(
-                        "Response on AppMR Ticket {0}".format(bug_id),
-                        "{0}\n\n\nTHIS IS AN AUTOMATED MESSAGE. PLEASE DO NOT REPLY TO THIS EMAIL. PLEASE LOG IN TO REPLY.".format(
-                            t.comment
-                        ),
+                        f"Response on AppMR Ticket {bug_id}",
+                        f"{t.comment}\n\n\nTHIS IS AN AUTOMATED MESSAGE. "
+                        "PLEASE DO NOT REPLY TO THIS EMAIL. "
+                        "PLEASE LOG IN TO REPLY.",
                         os.environ.get("DEFAULT_FROM_EMAIL"),
                         [os.environ.get("DEV_EMAIL"), t.author.email, m.reporter.email],
                     )
                 comment_form = CommentForm()
         comments = m.comments.all()
-        return render(
+        return_response = render(
             request,
             "appMR/bug_detail.html",
             {
@@ -242,4 +235,5 @@ def post_comment_view(request, bug_id=None):
             },
         )
     else:
-        return redirect("appMR:not_logged_in")
+        return_response = redirect("appMR:not_logged_in")
+    return return_response

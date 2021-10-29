@@ -13,6 +13,7 @@ from .views import (
     change_bug_list_view,
 )
 
+# pylint: disable=C0103
 app_name = "appMR"
 
 urlpatterns = [
