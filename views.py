@@ -6,6 +6,7 @@ import os
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
+from .signals import ticket_activity
 
 from appMR.background_tasks import check_old_tickets
 from .forms import SupportTicketForm, CommentForm
@@ -69,6 +70,7 @@ def new_bug_view(request, ticket_type=0):
                     os.environ.get("DEFAULT_FROM_EMAIL"),
                     [os.environ.get("DEV_EMAIL")],
                 )
+                ticket_activity.send(sender=new_bug_view, ticket=t.id)
                 form = SupportTicketForm()
         else:
             form = SupportTicketForm()
@@ -168,6 +170,7 @@ def bug_detail_view(request, id=None):
                 else:
                     t.active = True
                 t.save()
+                ticket_activity.send(sender=bug_detail_view, ticket=t.id)
         else:
             form = SupportTicketForm(instance=m)
         return_response = render(
@@ -221,6 +224,7 @@ def post_comment_view(request, bug_id=None):
                         os.environ.get("DEFAULT_FROM_EMAIL"),
                         [os.environ.get("DEV_EMAIL"), t.author.email, m.reporter.email],
                     )
+                ticket_activity.send(sender=post_comment_view, ticket=t.id)
                 comment_form = CommentForm()
         comments = m.comments.all()
         return_response = render(
