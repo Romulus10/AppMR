@@ -6,28 +6,18 @@ import os
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
-from .signals import ticket_activity
 
 from appMR.background_tasks import check_old_tickets
-from .forms import SupportTicketForm, CommentForm
-from .models import SupportTicket
+from appMR.signals import ticket_activity
+from appMR.forms import SupportTicketForm, CommentForm
+from appMR.models import SupportTicket
 
 
 def not_logged_in(request):
-    """
-
-    :param request:
-    :return:
-    """
     return render(request, "appMR/not_logged_in.html")
 
 
 def __get_dev(request):
-    """
-
-    :param request:
-    :return:
-    """
     if request.user.groups.filter(name="Developer").exists():
         bug_list = SupportTicket.objects.filter(active=True)
         done_list = SupportTicket.objects.filter(active=False)
@@ -44,33 +34,27 @@ def __get_dev(request):
 
 
 def new_bug_view(request, ticket_type=0):
-    """
-
-    :param request:
-    :param ticket_type:
-    :return:
-    """
     if request.user.is_authenticated:
         dev, bug_list, done_list = __get_dev(request)
         if request.method == "POST":
             form = SupportTicketForm(request.POST, request.FILES)
             if form.is_valid():
-                t = form.save()
-                t.reporter = request.user
-                t.status = "1"
-                t.active = True
-                t.last_updated = now()
-                t.save()
+                ticket = form.save()
+                ticket.reporter = request.user
+                ticket.status = "1"
+                ticket.active = True
+                ticket.last_updated = now()
+                ticket.save()
                 # noinspection LongLine
                 send_mail(
-                    f"New AppMR Ticket {t.id}",
-                    f"{t.description}\n\n\nTHIS IS AN AUTOMATED MESSAGE. "
+                    f"New AppMR Ticket {ticket.id}",
+                    f"{ticket.description}\n\n\nTHIS IS AN AUTOMATED MESSAGE. "
                     "PLEASE DO NOT REPLY TO THIS EMAIL. "
                     "PLEASE LOG IN TO REPLY.",
                     os.environ.get("DEFAULT_FROM_EMAIL"),
                     [os.environ.get("DEV_EMAIL")],
                 )
-                ticket_activity.send(sender=new_bug_view, ticket=t.id)
+                ticket_activity.send(sender=new_bug_view, ticket=ticket.id)
                 form = SupportTicketForm()
         else:
             form = SupportTicketForm()
@@ -91,12 +75,6 @@ def new_bug_view(request, ticket_type=0):
 
 
 def bug_list_view(request, ticket_type=0):
-    """
-
-    :param request:
-    :param ticket_type:
-    :return:
-    """
     if request.user.is_authenticated:
         check_old_tickets()
         form = SupportTicketForm()
@@ -118,12 +96,6 @@ def bug_list_view(request, ticket_type=0):
 
 
 def change_bug_list_view(request, ticket_type=0):
-    """
-
-    :param request:
-    :param ticket_type:
-    :return:
-    """
     if request.user.is_authenticated:
         ticket_type = 0 if ticket_type == 1 else 1
         form = SupportTicketForm()
@@ -144,41 +116,34 @@ def change_bug_list_view(request, ticket_type=0):
     return return_response
 
 
-def bug_detail_view(request, id=None):
-    """
-
-    :param request:
-    :param id:
-    :return:
-    """
+def bug_detail_view(request, ticket_id=None):
     if request.user.is_authenticated:
-        m = get_object_or_404(SupportTicket, pk=id)
-        comments = m.comments.all()
+        ticket = get_object_or_404(SupportTicket, pk=ticket_id)
+        comments = ticket.comments.all()
         comment_form = CommentForm()
-        if request.user.groups.filter(name="Developer").exists():
-            dev = True
-        else:
-            dev = False
+        dev = request.user.groups.filter(name="Developer").exists()
         if request.method == "POST":
-            form = SupportTicketForm(request.POST or None, request.FILES, instance=m)
+            form = SupportTicketForm(
+                request.POST or None, request.FILES, instance=ticket
+            )
             if form.is_valid():
-                t = form.save()
-                t.status = m.status
-                t.active = m.active
-                if t.status == "6":
-                    t.active = False
+                updated_ticket = form.save()
+                updated_ticket.status = ticket.status
+                updated_ticket.active = ticket.active
+                if updated_ticket.status == "6":
+                    updated_ticket.active = False
                 else:
-                    t.active = True
-                t.save()
-                ticket_activity.send(sender=bug_detail_view, ticket=t.id)
+                    updated_ticket.active = True
+                updated_ticket.save()
+                ticket_activity.send(sender=bug_detail_view, ticket=updated_ticket.id)
         else:
-            form = SupportTicketForm(instance=m)
+            form = SupportTicketForm(instance=ticket)
         return_response = render(
             request,
             "appMR/bug_detail.html",
             {
-                "bug_id": m.id,
-                "bug": m,
+                "bug_id": ticket.id,
+                "bug": ticket,
                 "dev": dev,
                 "form": form,
                 "comment_form": comment_form,
@@ -191,47 +156,42 @@ def bug_detail_view(request, id=None):
 
 
 def post_comment_view(request, bug_id=None):
-    """
-
-    :param request:
-    :param bug_id:
-    :return:
-    """
     if request.user.is_authenticated:
-        if request.user.groups.filter(name="Developer").exists():
-            dev = True
-        else:
-            dev = False
-        m = get_object_or_404(SupportTicket, pk=bug_id)
-        form = SupportTicketForm(instance=m)
+        dev = request.user.groups.filter(name="Developer").exists()
+        ticket = get_object_or_404(SupportTicket, pk=bug_id)
+        form = SupportTicketForm(instance=ticket)
         comment_form = CommentForm()
         if request.method == "POST":
             comment_form = CommentForm(request.POST, request.FILES)
             if comment_form.is_valid():
-                t = comment_form.save()
-                t.author = request.user
-                t.save()
-                m.comments.add(t)
-                m.last_updated = now()
-                m.save()
+                comment = comment_form.save()
+                comment.author = request.user
+                comment.save()
+                ticket.comments.add(comment)
+                ticket.last_updated = now()
+                ticket.save()
                 if os.environ.get("EMAIL_HOST") != "":
                     # noinspection LongLine
                     send_mail(
                         f"Response on AppMR Ticket {bug_id}",
-                        f"{t.comment}\n\n\nTHIS IS AN AUTOMATED MESSAGE. "
+                        f"{comment.comment}\n\n\nTHIS IS AN AUTOMATED MESSAGE. "
                         "PLEASE DO NOT REPLY TO THIS EMAIL. "
                         "PLEASE LOG IN TO REPLY.",
                         os.environ.get("DEFAULT_FROM_EMAIL"),
-                        [os.environ.get("DEV_EMAIL"), t.author.email, m.reporter.email],
+                        [
+                            os.environ.get("DEV_EMAIL"),
+                            comment.author.email,
+                            ticket.reporter.email,
+                        ],
                     )
-                ticket_activity.send(sender=post_comment_view, ticket=t.id)
+                ticket_activity.send(sender=post_comment_view, ticket=comment.id)
                 comment_form = CommentForm()
-        comments = m.comments.all()
+        comments = ticket.comments.all()
         return_response = render(
             request,
             "appMR/bug_detail.html",
             {
-                "bug_id": m.id,
+                "bug_id": ticket.id,
                 "dev": dev,
                 "form": form,
                 "comment_form": comment_form,

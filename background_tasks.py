@@ -16,9 +16,9 @@ def check_old_tickets(now=None) -> None:
     """
     if now is None:
         now = timezone.now()
-    d = now - timedelta(days=30)
+    delta = now - timedelta(days=30)
     for ticket in SupportTicket.objects.filter(active=True):
-        if ticket.last_updated < d:
+        if ticket.last_updated < delta:
             ticket.comments.add(
                 Comment.objects.create(
                     author=User.objects.get(pk=1),
