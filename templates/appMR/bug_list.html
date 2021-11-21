@@ -66,7 +66,7 @@
                 {% endif %}
                 <td>{{ o.get_status_display }}</td>
                 <td>{{ o.timestamp }}</td>
-                <td><a href="{% url 'appMR:bug_detail_view' id=o.id %}">View</a></td>
+                <td><a href="{% url 'appMR:bug_detail_view' ticket_id=o.id %}">View</a></td>
             </tr>
             {% endfor %}
             {% else %}
@@ -79,7 +79,7 @@
                 {% endif %}
                 <td>{{ o.get_status_display }}</td>
                 <td>{{ o.timestamp }}</td>
-                <td><a href="{% url 'appMR:bug_detail_view' id=o.id %}">View</a></td>
+                <td><a href="{% url 'appMR:bug_detail_view' ticket_id=o.id %}">View</a></td>
             </tr>
             {% endfor %}
             {% endif %}
