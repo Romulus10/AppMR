@@ -7,7 +7,7 @@
             <h3>Edit Ticket - {{ bug_id }}</h3>
         </div>
         <div>
-            <form action="{% url 'appMR:bug_detail_view' id=bug_id %}" enctype="multipart/form-data" method="post">
+            <form action="{% url 'appMR:bug_detail_view' ticket_id=bug_id %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="container">
                     <div class="row justify-content-center">

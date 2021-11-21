@@ -20,7 +20,7 @@ urlpatterns = [
     url(r"^$", bug_list_view, name="index"),
     path(r"list/<int:ticket_type>", bug_list_view, name="bug_list_view"),
     url(r"^new/$", new_bug_view, name="new_bug_view"),
-    path(r"detail/<int:id>", bug_detail_view, name="bug_detail_view"),
+    path(r"detail/<int:ticket_id>", bug_detail_view, name="bug_detail_view"),
     path(r"comment/<int:bug_id>", post_comment_view, name="post_comment_view"),
     path(
         r"change/<int:ticket_type>", change_bug_list_view, name="change_bug_list_view"
