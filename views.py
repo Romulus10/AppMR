@@ -184,7 +184,7 @@ def post_comment_view(request, bug_id=None):
                             ticket.reporter.email,
                         ],
                     )
-                ticket_activity.send(sender=post_comment_view, ticket=comment.id)
+                ticket_activity.send(sender=post_comment_view, ticket=ticket.id)
                 comment_form = CommentForm()
         comments = ticket.comments.all()
         return_response = render(
