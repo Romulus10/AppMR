@@ -7,7 +7,7 @@
             <h3>Leave a Bug or Problem Report</h3>
         </div>
         <div>
-            <form action="{% url 'appMR:new_bug_view' %}" enctype="multipart/form-data" method="post">
+            <form action="{% url 'app_mr:new_bug_view' %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="container">
                     <div class="row justify-content-center">
@@ -34,11 +34,11 @@
         <div>
             {% if open == 0 %}
             <h3>Your Open Tickets
-                <a class="btn btn-primary" href="{% url 'appMR:change_bug_list_view' ticket_type=open %}">Closed</a>
+                <a class="btn btn-primary" href="{% url 'app_mr:change_bug_list_view' ticket_type=open %}">Closed</a>
             </h3>
             {% else %}
             <h3>Your Closed Tickets
-                <a class="btn btn-primary" href="{% url 'appMR:change_bug_list_view' ticket_type=open %}">Open</a>
+                <a class="btn btn-primary" href="{% url 'app_mr:change_bug_list_view' ticket_type=open %}">Open</a>
             </h3>
             {% endif %}
         </div>
@@ -66,7 +66,7 @@
                 {% endif %}
                 <td>{{ o.get_status_display }}</td>
                 <td>{{ o.timestamp }}</td>
-                <td><a href="{% url 'appMR:bug_detail_view' ticket_id=o.id %}">View</a></td>
+                <td><a href="{% url 'app_mr:bug_detail_view' ticket_id=o.id %}">View</a></td>
             </tr>
             {% endfor %}
             {% else %}
@@ -79,7 +79,7 @@
                 {% endif %}
                 <td>{{ o.get_status_display }}</td>
                 <td>{{ o.timestamp }}</td>
-                <td><a href="{% url 'appMR:bug_detail_view' ticket_id=o.id %}">View</a></td>
+                <td><a href="{% url 'app_mr:bug_detail_view' ticket_id=o.id %}">View</a></td>
             </tr>
             {% endfor %}
             {% endif %}

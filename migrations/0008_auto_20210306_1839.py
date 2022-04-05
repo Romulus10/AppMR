@@ -9,7 +9,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("appMR", "0007_auto_20210306_1808"),
+        ("app_mr", "0007_auto_20210306_1808"),
     ]
 
     operations = [

@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("timestamp", models.DateTimeField(auto_now=True)),
-                ("comments", models.ManyToManyField(to="appMR.Comment")),
+                ("comments", models.ManyToManyField(to="app_mr.Comment")),
                 (
                     "reporter",
                     models.ForeignKey(

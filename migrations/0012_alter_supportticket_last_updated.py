@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("appMR", "0011_supportticket_last_updated"),
+        ("app_mr", "0011_supportticket_last_updated"),
     ]
 
     operations = [

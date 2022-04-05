@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AnonymousUser
 from django.test.client import RequestFactory
 
-from appMR.views import bug_list_view, not_logged_in
+from app_mr.views import bug_list_view, not_logged_in
 
 
 def test_not_logged_in():

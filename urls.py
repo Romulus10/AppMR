@@ -1,5 +1,5 @@
 """
-appMR URL configurations.
+app_mr URL configurations.
 """
 from django.conf.urls import url
 from django.urls import path
@@ -14,7 +14,7 @@ from .views import (
 )
 
 # pylint: disable=C0103
-app_name = "appMR"
+app_name = "app_mr"
 
 urlpatterns = [
     url(r"^$", bug_list_view, name="index"),

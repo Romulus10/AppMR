@@ -1,5 +1,5 @@
 """
-Register appMR models with the admin site.
+Register app_mr models with the admin site.
 """
 from django.contrib import admin
 

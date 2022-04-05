@@ -1,5 +1,5 @@
-from appMR.apps import AppmrConfig
+from app_mr.apps import AppMRConfig
 
 
 def test_main_config():
-    assert AppmrConfig.name == "appMR"
+    assert AppMRConfig.name == "app_mr"

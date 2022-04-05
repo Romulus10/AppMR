@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from appMR.models import Comment, SupportTicket, User
+from app_mr.models import Comment, SupportTicket, User
 
 
 def check_old_tickets(now=None) -> None:

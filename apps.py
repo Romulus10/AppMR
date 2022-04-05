@@ -1,12 +1,12 @@
 """
-appMR AppConfig.
+app_mr AppConfig.
 """
 from django.apps import AppConfig
 
 
-class AppmrConfig(AppConfig):
+class AppMRConfig(AppConfig):
     """
-    Configurations for appMR.
+    Configurations for app_mr.
     """
 
-    name = "appMR"
+    name = "app_mr"
