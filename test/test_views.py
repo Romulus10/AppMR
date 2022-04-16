@@ -44,5 +44,4 @@ def test_bug_list_logged():
     )
     u.delete()
     assert return_response.status_code == 200
-    print(return_response.content)
     assert "Leave a Bug or Problem Report" in str(return_response.content)
